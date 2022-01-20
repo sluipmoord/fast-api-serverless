@@ -138,10 +138,10 @@
    service: fast-api-serverless-demo
 
    provider:
-   name: aws
-   runtime: python3.9
-   region: af-south-1
-   stage: ${opt:stage, "dev"}
+     name: aws
+     runtime: python3.9
+     region: af-south-1
+     stage: ${opt:stage, "dev"}
 
    plugins:
      - serverless-python-requirements
@@ -156,35 +156,35 @@
        - python3.9
 
    package:
-   individually: true
-   include:
-     - "main.py"
-   exclude:
-     - "__pycache__"
-     - "requirements.txt"
-     - "requirements.in"
-     - "README.md"
-     - "package.json"
-     - "package-lock.json"
-     - ".serverless/**"
-     - "venv/**"
-     - "node_modules/**"
+     individually: true
+     include:
+       - "main.py"
+     exclude:
+       - "__pycache__"
+       - "requirements.txt"
+       - "requirements.in"
+       - "README.md"
+       - "package.json"
+       - "package-lock.json"
+       - ".serverless/**"
+       - "venv/**"
+       - "node_modules/**"
 
    functions:
-   app:
-     # points to handler in main.py
-     handler: main.handler
-     environment:
-     STAGE: ${self:provider.stage}
-     layers:
-       - { Ref: PythonRequirementsLambdaLayer }
-     events:
-       - http:
-           method: get
-           path: /
-       - http:
-           method: get
-           path: /{proxy+}
+     app:
+       # points to handler in main.py
+       handler: main.handler
+       environment:
+       STAGE: ${self:provider.stage}
+       layers:
+         - { Ref: PythonRequirementsLambdaLayer }
+       events:
+         - http:
+             method: get
+             path: /
+         - http:
+             method: get
+             path: /{proxy+}
    ```
 
 5. Deployment
