@@ -160,28 +160,29 @@ custom:
         - python3.8
 
 functions:
-  app:
-    package:
-      include:
-        - "main.py"
-      exclude:
-        - "requirements.txt"
-        - "package.json"
-        - "package-lock.json"
-        - ".serverless/**"
-        - ".venv/**"
-        - "node_modules/**"
+  package:
+    include:
+      - "main.py"
+    exclude:
+      - "__pycache__"
+      - "requirements.txt"
+      - "package.json"
+      - "package-lock.json"
+      - ".serverless/**"
+      - ".venv/**"
+      - "node_modules/**"
 
-    # points to handler in main.py
-    handler: main.handler
-    environment:
-      STAGE: ${self:provider.stage}
-    layers:
-      - { Ref: PythonRequirementsLambdaLayer }
-    events:
-      - http:
-          method: any
-          path: /{proxy+}
+app:
+  # points to handler in main.py
+  handler: main.handler
+  environment:
+    STAGE: ${self:provider.stage}
+  layers:
+    - { Ref: PythonRequirementsLambdaLayer }
+  events:
+    - http:
+        method: any
+        path: /{proxy+}
 ```
 
 5. Deployment
