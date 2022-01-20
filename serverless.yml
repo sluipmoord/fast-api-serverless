@@ -1,0 +1,50 @@
+service: fast-api-serverless-demo
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: af-south-1
+  stage: ${opt:stage, "dev"}
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer:
+      name: fast-api-serverless-demo-layer
+      description: Requirements layer
+      compatibleRuntimes:
+        - python3.9
+
+package:
+  individually: true
+  include:
+    - "main.py"
+  exclude:
+    - "__pycache__"
+    - "requirements.txt"
+    - "requirements.in"
+    - "README.md"
+    - "package.json"
+    - "package-lock.json"
+    - ".serverless/**"
+    - "venv/**"
+    - "node_modules/**"
+
+functions:
+  app:
+    # points to handler in main.py
+    handler: main.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
+    events:
+      - http:
+          method: get
+          path: /
+      - http:
+          method: get
+          path: /{proxy+}

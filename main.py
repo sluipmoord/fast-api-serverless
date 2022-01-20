@@ -1,7 +1,11 @@
+import os
 from fastapi import FastAPI
 from mangum import Mangum
 
-app = FastAPI()
+stage = os.environ.get("STAGE", None)
+openapi_prefix = f"/{stage}" if stage else "/"
+
+app = FastAPI(openapi_prefix=openapi_prefix)
 
 
 @app.get("/")
