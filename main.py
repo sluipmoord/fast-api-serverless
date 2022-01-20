@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from mangum import Mangum
 
 app = FastAPI()
 
@@ -27,3 +28,6 @@ def get_user(user_id: int):
 
     """
     return {"user": user_id}
+
+
+handler = Mangum(app)
